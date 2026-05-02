@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product Details - Our Store{% endblock %}
+{% block title %}{{ product.name }} - Our Store{% endblock %}
 
 {% block body %}
     <!-- Header -->
@@ -26,19 +26,19 @@
     <div class="container my-5">
         <div class="row">
             <div class="col-md-6">
-                <img src="{{ asset('assets/images/item.png') }}" class="img-fluid rounded shadow-sm" alt="Product">
+                <img src="{{ asset('assets/images/item.png') }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
             </div>
             <div class="col-md-6">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Electronics</a></li>
-                        <li class="breadcrumb-item active">Wireless Headphones</li>
+                        <li class="breadcrumb-item"><a href="{{ path('app_products_by_category', {'id': product.category.id}) }}">{{ product.category.name }}</a></li>
+                        <li class="breadcrumb-item active">{{ product.name }}</li>
                     </ol>
                 </nav>
-                <h1 class="display-5 fw-bold">Wireless Headphones</h1>
-                <p class="fs-4 text-success fw-bold mb-4">$79.99</p>
-                <p class="lead mb-4">High-quality wireless headphones with noise cancellation technology. Enjoy crystal clear sound and long battery life for all your musical needs.</p>
+                <h1 class="display-5 fw-bold">{{ product.name }}</h1>
+                <p class="fs-4 text-success fw-bold mb-4">{{ product.price }} €</p>
+                <p class="lead mb-4">{{ product.description }}</p>
                 
                 <div class="mb-4">
                     <label class="form-label fw-bold">Quantity</label>
@@ -46,14 +46,6 @@
                 </div>
                 
                 <button class="btn btn-primary btn-lg px-5 mb-3">Add to Cart</button>
-                <hr>
-                <h5>Product Specifications</h5>
-                <ul>
-                    <li>Battery Life: 30 hours</li>
-                    <li>Connectivity: Bluetooth 5.0</li>
-                    <li>Noise Cancellation: Active</li>
-                    <li>Charging: USB-C</li>
-                </ul>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Browse Categories - Our Store{% endblock %}
+{% block title %}Our Categories - Our Store{% endblock %}
 
 {% block body %}
     <!-- Header -->
@@ -16,6 +16,9 @@
                         <a class="nav-link" href="{{ path('app_home') }}">Products</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('app_categories') }}">Categories</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_cart') }}">Cart</a>
                     </li>
                 </ul>
@@ -26,33 +29,21 @@
     <div class="container my-5 text-center">
         <h1 class="mb-5">Our Categories</h1>
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm category-card">
-                    <div class="card-body py-5">
-                        <h3 class="card-title">Electronics</h3>
-                        <p class="text-muted">Phones, Laptops, Accessories</p>
-                        <a href="{{ path('app_products_by_category', {'id': 1}) }}" class="btn btn-outline-primary mt-3">Explore</a>
+            {% for category in categories %}
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm category-card">
+                        <div class="card-body py-5">
+                            <h3 class="card-title">{{ category.name }}</h3>
+                            <p class="text-muted">{{ category.products|length }} Products available</p>
+                            <a href="{{ path('app_products_by_category', {'id': category.id}) }}" class="btn btn-outline-primary mt-3">Explore</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm category-card">
-                    <div class="card-body py-5">
-                        <h3 class="card-title">Fashion</h3>
-                        <p class="text-muted">Clothing, Shoes, Bags</p>
-                        <a href="{{ path('app_products_by_category', {'id': 2}) }}" class="btn btn-outline-primary mt-3">Explore</a>
-                    </div>
+            {% else %}
+                <div class="col-12">
+                    <p>No categories found.</p>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm category-card">
-                    <div class="card-body py-5">
-                        <h3 class="card-title">Home & Garden</h3>
-                        <p class="text-muted">Furniture, Decor, Tools</p>
-                        <a href="{{ path('app_products_by_category', {'id': 3}) }}" class="btn btn-outline-primary mt-3">Explore</a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

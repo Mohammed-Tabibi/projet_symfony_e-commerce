@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,9 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(ProductRepository $productRepository): Response
     {
-        return $this->render('main/index.html.twig');
+        // On récupère tous les produits pour l'accueil
+        $products = $productRepository->findAll();
+
+        return $this->render('main/index.html.twig', [
+            'products' => $products,
+        ]);
     }
 
     #[Route('/login', name: 'app_login')]
@@ -27,15 +34,27 @@ class MainController extends AbstractController
     }
 
     #[Route('/product/{id}', name: 'app_product_details')]
-    public function productDetails(int $id): Response
+    public function productDetails(int $id, ProductRepository $productRepository): Response
     {
-        return $this->render('main/product_details.html.twig');
+        $product = $productRepository->find($id);
+
+        if (!$product) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+
+        return $this->render('main/product_details.html.twig', [
+            'product' => $product,
+        ]);
     }
 
     #[Route('/categories', name: 'app_categories')]
-    public function categories(): Response
+    public function categories(CategoryRepository $categoryRepository): Response
     {
-        return $this->render('main/browse_categories.html.twig');
+        $categories = $categoryRepository->findAll();
+
+        return $this->render('main/browse_categories.html.twig', [
+            'categories' => $categories,
+        ]);
     }
 
     #[Route('/cart', name: 'app_cart')]
@@ -45,8 +64,17 @@ class MainController extends AbstractController
     }
 
     #[Route('/category/{id}', name: 'app_products_by_category')]
-    public function productsByCategory(int $id): Response
+    public function productsByCategory(int $id, CategoryRepository $categoryRepository): Response
     {
-        return $this->render('main/products_by_category.html.twig');
+        $category = $categoryRepository->find($id);
+
+        if (!$category) {
+            throw $this->createNotFoundException('Catégorie non trouvée');
+        }
+
+        return $this->render('main/products_by_category.html.twig', [
+            'category' => $category,
+            'products' => $category->getProducts(),
+        ]);
     }
 }
