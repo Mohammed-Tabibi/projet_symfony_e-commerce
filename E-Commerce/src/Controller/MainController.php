@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,9 +59,26 @@ class MainController extends AbstractController
     }
 
     #[Route('/cart', name: 'app_cart')]
-    public function cart(): Response
+    public function cart(Service\CartHandler $cartHandler): Response
     {
-        return $this->render('main/cart.html.twig');
+        return $this->render('main/cart.html.twig', [
+            'cart' => $cartHandler->getCurrentCart(),
+        ]);
+    }
+
+    #[Route('/cart/add/{id}', name: 'app_cart_add', methods: ['POST'])]
+    public function addToCart(int $id, ProductRepository $productRepository, Service\CartHandler $cartHandler): Response
+    {
+        $product = $productRepository->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('Produit non trouvé');
+        }
+
+        $cartHandler->handleAddToCart($product, 1);
+
+        $this->addFlash('success', 'Produit ajouté au panier !');
+
+        return $this->redirectToRoute('app_cart');
     }
 
     #[Route('/category/{id}', name: 'app_products_by_category')]

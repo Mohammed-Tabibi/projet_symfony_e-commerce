@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Shopping Cart - Our Store{% endblock %}
+{% block title %}Your Cart - Our Store{% endblock %}
 
 {% block body %}
     <!-- Header -->
@@ -15,12 +15,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_home') }}">Products</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('app_cart') }}">Cart</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -29,111 +23,51 @@
     <div class="container my-5">
         <h1 class="mb-4">Shopping Cart</h1>
 
-        <div class="row">
-            <!-- Cart Items -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <!-- Item 1 -->
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-2">
-                                <img src="{{ asset('assets/images/item.png') }}" alt="Product" class="img-fluid rounded">
-                            </div>
-                            <div class="col-md-4">
-                                <h5 class="mb-1">Wireless Headphones</h5>
-                                <p class="text-muted mb-0">Electronics</p>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="input-group input-group-sm">
-                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                    <input type="text" class="form-control text-center" value="1">
-                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 text-md-end">
-                                <span class="fw-bold">$79.99</span>
-                            </div>
-                            <div class="col-md-1 text-md-end">
-                                <button class="btn btn-link text-danger p-0"><i class="bi bi-trash"></i>Remove</button>
-                            </div>
-                        </div>
-
-                        <hr>
-
-                        <!-- Item 2 -->
-                        <div class="row mb-4 align-items-center">
-                            <div class="col-md-2">
-                                <img src="{{ asset('assets/images/item.png') }}" alt="Product" class="img-fluid rounded">
-                            </div>
-                            <div class="col-md-4">
-                                <h5 class="mb-1">Bluetooth Speaker</h5>
-                                <p class="text-muted mb-0">Electronics</p>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="input-group input-group-sm">
-                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                    <input type="text" class="form-control text-center" value="1">
-                                    <button class="btn btn-outline-secondary" type="button">+</button>
-                                </div>
-                            </div>
-                            <div class="col-md-2 text-md-end">
-                                <span class="fw-bold">$59.99</span>
-                            </div>
-                            <div class="col-md-1 text-md-end">
-                                <button class="btn btn-link text-danger p-0">Remove</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <a href="{{ path('app_home') }}" class="btn btn-outline-primary">Continue Shopping</a>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
             </div>
+        {% endfor %}
 
-            <!-- Summary -->
-            <div class="col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title mb-4">Order Summary</h5>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Subtotal</span>
-                            <span>$139.98</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Shipping</span>
-                            <span class="text-success">Free</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
-                            <span>Tax</span>
-                            <span>$11.20</span>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="fw-bold h5">Total</span>
-                            <span class="fw-bold h5">$151.18</span>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-primary btn-lg">Checkout</button>
-                        </div>
-                    </div>
-                </div>
+        {% if cart.items is empty %}
+            <div class="alert alert-info">
+                Your cart is empty. <a href="{{ path('app_home') }}">Go shopping!</a>
             </div>
-        </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart.items %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.product.price }} €</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.totalPrice }} €</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">Total:</th>
+                            <th>{{ cart.total }} €</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <div class="text-end mt-4">
+                <button class="btn btn-success btn-lg">Checkout</button>
+            </div>
+        {% endif %}
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white mt-auto py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Our Store</h5>
-                    <p>Quality products at affordable prices</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p>&copy; 2026 Our Store. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 {% endblock %}
 
 {% block stylesheets %}
