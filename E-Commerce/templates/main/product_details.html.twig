@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product Details - Our Store{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('app_home') }}">Our Store</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_home') }}">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_cart') }}">Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ asset('assets/images/item.png') }}" class="img-fluid rounded shadow-sm" alt="Product">
+            </div>
+            <div class="col-md-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Electronics</a></li>
+                        <li class="breadcrumb-item active">Wireless Headphones</li>
+                    </ol>
+                </nav>
+                <h1 class="display-5 fw-bold">Wireless Headphones</h1>
+                <p class="fs-4 text-success fw-bold mb-4">$79.99</p>
+                <p class="lead mb-4">High-quality wireless headphones with noise cancellation technology. Enjoy crystal clear sound and long battery life for all your musical needs.</p>
+                
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Quantity</label>
+                    <input type="number" class="form-control w-25" value="1" min="1">
+                </div>
+                
+                <button class="btn btn-primary btn-lg px-5 mb-3">Add to Cart</button>
+                <hr>
+                <h5>Product Specifications</h5>
+                <ul>
+                    <li>Battery Life: 30 hours</li>
+                    <li>Connectivity: Bluetooth 5.0</li>
+                    <li>Noise Cancellation: Active</li>
+                    <li>Charging: USB-C</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
