@@ -3,29 +3,6 @@
 {% block title %}My Profile - Our Store{% endblock %}
 
 {% block body %}
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ path('app_home') }}">Our Store</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_home') }}">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_cart') }}">Cart</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ path('app_profile') }}">Profile</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <div class="container my-5">
         <div class="row">
             <!-- Sidebar -->
@@ -33,13 +10,11 @@
                 <div class="card shadow-sm">
                     <div class="card-body text-center">
                         <img src="{{ asset('assets/images/profile.png') }}" class="rounded-circle mb-3" alt="Profile" style="width: 150px; height: 150px; object-fit: cover;">
-                        <h5 class="mb-1">John Doe</h5>
-                        <p class="text-muted small mb-3">Member since Jan 2024</p>
+                        <h5 class="mb-1">{{ app.user.mohammed }}</h5>
+                        <p class="text-muted small mb-3">Member since {{ "now"|date("M Y") }}</p>
                         <div class="list-group list-group-flush text-start">
                             <a href="#info" class="list-group-item list-group-item-action active">Personal Info</a>
-                            <a href="#orders" class="list-group-item list-group-item-action">Orders</a>
-                            <a href="#settings" class="list-group-item list-group-item-action">Account Settings</a>
-                            <a href="#" class="list-group-item list-group-item-action text-danger">Logout</a>
+                            <a href="{{ path('app_logout') }}" class="list-group-item list-group-item-action text-danger">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -55,11 +30,11 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="fw-bold">Full Name:</label>
-                                <p>John Doe</p>
+                                <p>{{ app.user.mohammed }}</p>
                             </div>
                             <div class="col-md-6">
                                 <label class="fw-bold">Email:</label>
-                                <p>john.doe@example.com</p>
+                                <p>{{ app.user.email }}</p>
                             </div>
                         </div>
                         <div class="row mb-3">

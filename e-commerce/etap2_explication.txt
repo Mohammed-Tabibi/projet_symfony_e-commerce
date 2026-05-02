@@ -1,0 +1,51 @@
+EXPLICATION DE L'ÉTAPE 2 : BASE DE DONNÉES ET DYNAMISATION
+
+Ce document résume les actions effectuées pour rendre le site e-commerce dynamique.
+
+1. CONFIGURATION DE MYSQL
+--------------------------
+Nous avons installé MySQL Server sur Ubuntu et créé un utilisateur dédié pour Symfony.
+- Utilisateur : admin
+- Mot de passe : admin
+- Base de données : ecommerce
+
+Fichier modifié (.env.local) :
+DATABASE_URL="mysql://admin:admin@127.0.0.1:3306/ecommerce?serverVersion=8.0.45&charset=utf8mb4"
+
+2. CRÉATION DES ENTITÉS (MODÈLE DE DONNÉES)
+-------------------------------------------
+Nous avons créé deux classes PHP qui représentent nos tables en base de données :
+- Category : Contient le nom de la catégorie (ex: Électronique).
+- Product : Contient le nom, la description, le prix et un lien vers une catégorie.
+
+Relation utilisée : ManyToOne
+(Un produit appartient à une seule catégorie, mais une catégorie peut avoir plusieurs produits).
+
+3. LES MIGRATIONS
+-----------------
+C'est le processus qui transforme nos classes PHP en tables réelles dans MySQL.
+Commandes :
+$ php bin/console make:migration (Prépare les requêtes SQL)
+$ php bin/console doctrine:migrations:migrate (Exécute les requêtes)
+
+4. LES FIXTURES (DONNÉES DE TEST)
+---------------------------------
+Pour ne pas avoir un site vide, nous avons utilisé "DoctrineFixturesBundle".
+Cela nous a permis d'insérer automatiquement des produits de test dans la base de données.
+Commande :
+$ php bin/console doctrine:fixtures:load
+
+5. DYNAMISATION DU CODE (CONTRÔLEUR & TWIG)
+-------------------------------------------
+Nous avons modifié le code pour qu'il n'affiche plus de texte fixe.
+
+Dans le Contrôleur :
+$products = $productRepository->findAll(); // On va chercher les vrais produits.
+
+Dans le Template Twig :
+{% for product in products %}
+    {{ product.name }} - {{ product.price }} €
+{% endfor %}
+
+--------------------------------------------------
+ÉTAPE 2 VALIDÉE : Le site affiche maintenant les vrais produits stockés dans MySQL.

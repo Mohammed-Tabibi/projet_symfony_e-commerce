@@ -28,9 +28,29 @@ class MainController extends AbstractController
         return $this->render('main/login.html.twig');
     }
 
+    #[Route('/register', name: 'app_register')]
+    public function register(\Symfony\Component\HttpFoundation\Request $request, Service\UserHandler $userHandler): Response
+    {
+        $user = new \App\Entity\User();
+        $form = $this->createForm(\App\Form\RegistrationType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userHandler->handleRegistration($user);
+            $this->addFlash('success', 'Votre compte a été créé ! Connectez-vous.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('main/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
+
     #[Route('/profile', name: 'app_profile')]
     public function profile(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
         return $this->render('main/profile.html.twig');
     }
 

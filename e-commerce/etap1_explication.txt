@@ -1,0 +1,53 @@
+EXPLICATION DE L'ÉTAPE 1 : CRÉATION ET INTÉGRATION SYMFONY
+
+Ce document résume les actions effectuées pour mettre en place la structure du projet E-commerce.
+
+1. PRÉPARATION DE L'ENVIRONNEMENT
+----------------------------------
+Avant de créer le projet, nous avons installé les outils de base sur Ubuntu :
+- PHP : Le langage du serveur.
+- Composer : Le gestionnaire de dépendances pour PHP.
+- Symfony CLI : L'outil pour gérer les projets Symfony.
+
+Commande utilisée :
+$ sudo apt install -y php-cli php-mysql php-xml php-mbstring php-curl unzip
+$ curl -sS https://get.symfony.com/cli/installer | bash
+
+2. CRÉATION DU PROJET
+---------------------
+Nous avons créé l'ossature du site e-commerce avec la version "webapp" (complète).
+Commande :
+$ symfony new E-Commerce --webapp
+
+Structure créée :
+- src/Controller : Logique PHP (les routes).
+- templates/ : Les vues (fichiers .twig).
+- public/ : Les fichiers accessibles (images, css).
+
+3. CRÉATION DU CONTRÔLEUR (src/Controller/MainController.php)
+------------------------------------------------------------
+C'est le fichier qui fait le lien entre une URL et une page HTML.
+Exemple de code ajouté :
+
+    #[Route('/', name: 'app_home')]
+    public function index(): Response {
+        return $this->render('main/index.html.twig');
+    }
+
+Explication : Quand l'utilisateur va sur "/", Symfony appelle la fonction index() qui affiche le template index.html.twig.
+
+4. INTÉGRATION DES TEMPLATES (templates/main/)
+----------------------------------------------
+Nous avons transformé les fichiers .html statiques en templates Twig (.html.twig).
+Twig nous permet d'utiliser :
+- {% extends 'base.html.twig' %} : Pour ne pas répéter le header/footer sur chaque page.
+- {{ path('nom_de_la_route') }} : Pour créer des liens automatiques entre les pages.
+- {{ asset('chemin/image.png') }} : Pour charger les images correctement.
+
+5. GESTION DES ASSETS (public/assets/images/)
+---------------------------------------------
+Toutes les images fournies dans le dossier "files/" ont été déplacées dans "public/assets/images/".
+C'est le seul dossier où le navigateur est autorisé à lire des fichiers directement.
+
+--------------------------------------------------
+ÉTAPE 1 VALIDÉE : Les pages s'affichent correctement dans le navigateur via le serveur Symfony.
